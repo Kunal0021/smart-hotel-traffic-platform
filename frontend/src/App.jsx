@@ -11,7 +11,7 @@ import Hotels from "./pages/Hotels";
 import MyBookings from "./pages/MyBookings";
 import Recommendations from "./pages/Recommendations";
 import DPI from "./pages/DPI";
-
+import LandingPage from "./pages/LandingPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -21,6 +21,11 @@ function App() {
             <Routes>
                 <Route
                     path="/"
+                    element={<LandingPage />}
+                />
+
+                <Route
+                    path="/login"
                     element={<Login />}
                 />
 

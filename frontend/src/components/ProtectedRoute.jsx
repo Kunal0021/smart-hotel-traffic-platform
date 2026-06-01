@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProtectedRoute({
     children,
@@ -8,5 +8,5 @@ export default function ProtectedRoute({
 
     return token
         ? children
-        : <Navigate to="/" />;
+        : <Navigate to="/login" />;
 }
