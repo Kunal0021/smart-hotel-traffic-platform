@@ -48,13 +48,20 @@ export default function SideBar() {
                     </li>
 
                     <li>
-                        <Link
-                            to="/bookings"
-                            className="flex gap-3"
-                        >
-                            <BookOpen />
-                            Bookings
+                        <Link to="/recommendations">
+
+                            AI Recommendations
+
                         </Link>
+                    </li>
+                    <li>
+                        <Link to="/dpi">
+
+                            DPI Monitor
+
+                        </Link>
+                    </li>
+                    <li>
                     </li>
 
                 </ul>

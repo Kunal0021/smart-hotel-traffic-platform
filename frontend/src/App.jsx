@@ -9,6 +9,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Hotels from "./pages/Hotels";
 import MyBookings from "./pages/MyBookings";
+import Recommendations from "./pages/Recommendations";
+import DPI from "./pages/DPI";
+
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -49,6 +52,23 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <MyBookings />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/recommendations"
+                    element={
+                        <ProtectedRoute>
+                            <Recommendations />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/dpi"
+                    element={
+                        <ProtectedRoute>
+                            <DPI />
                         </ProtectedRoute>
                     }
                 />

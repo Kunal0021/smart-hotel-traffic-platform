@@ -52,6 +52,14 @@ app.use(
     )
 );
 
+const dpiRoutes =
+    require("./routes/dpiRoutes");
+
+app.use(
+    "/api/dpi",
+    dpiRoutes
+);
+
 app.get("/", (req, res) => {
     res.json({
         success: true,

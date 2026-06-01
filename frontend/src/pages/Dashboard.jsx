@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+
 import API from "../api/axios";
 import socket from "../socket";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import StatCard from "../components/StatCard";
-
 import RevenueChart from "../components/RevenueChart";
 
 
-
-
 export default function Dashboard() {
-    const [stats, setStats] = useState(null);
+
+    const navigate = useNavigate();
+
+    const [stats, setStats] =
+        useState(null);
+
+    const [isUser, setIsUser] =
+        useState(false);
+
 
     useEffect(() => {
 
@@ -20,12 +28,7 @@ export default function Dashboard() {
 
         socket.on(
             "newBooking",
-            (data) => {
-
-                console.log(
-                    data.message
-                );
-
+            () => {
                 fetchStats();
             }
         );
@@ -37,14 +40,14 @@ export default function Dashboard() {
             );
         };
 
+
     }, []);
 
-    const fetchStats = async () => {
-        try {
 
-            console.log(
-                "Fetching stats..."
-            );
+
+    const fetchStats = async () => {
+
+        try {
 
             const { data } =
                 await API.get(
@@ -52,108 +55,225 @@ export default function Dashboard() {
                 );
 
 
-            console.log(
-                "Stats Response:",
-                data
-            );
-
-
             setStats(
                 data.stats
             );
 
+
         } catch (error) {
 
             console.log(
-                "Stats Error:",
-                error.response?.data ||
-                error.message
+                "Normal user detected"
             );
 
+            setIsUser(true);
+
         }
+
     };
 
-    if (!stats) {
+
+
+    if (isUser) {
+
         return (
+
             <DashboardLayout>
-                <h2>Loading...</h2>
-            </DashboardLayout>
+
+                <h1 className="text-3xl font-bold mb-5">
+                    Welcome User
+                </h1>
+
+
+                <div className="grid grid-cols-3 gap-5">
+
+
+                    <div
+                        onClick={() =>
+                            navigate("/hotels")
+                        }
+
+                        className="
+        bg-white 
+        p-5 
+        rounded-xl 
+        shadow
+        cursor-pointer
+        hover:scale-105
+        transition
+        "
+                    >
+
+                        Browse Hotels
+
+                    </div>
+
+
+
+                    <div
+                        onClick={() =>
+                            navigate("/hotels")
+                        }
+
+                        className="
+        bg-white 
+        p-5 
+        rounded-xl 
+        shadow
+        cursor-pointer
+        hover:scale-105
+        transition
+        "
+                    >
+
+                        Book Rooms
+
+                    </div>
+
+
+
+                    <div
+                        onClick={() =>
+                            navigate("/bookings")
+                        }
+
+                        className="
+        bg-white 
+        p-5 
+        rounded-xl 
+        shadow
+        cursor-pointer
+        hover:scale-105
+        transition
+        "
+                    >
+
+                        Manage Bookings
+
+                    </div>
+
+
+                </div>
+
+
+                <div className="bg-white p-5 rounded-xl shadow">
+
+                    Browse Hotels
+
+                </div>
+
+
+                <div className="bg-white p-5 rounded-xl shadow">
+
+                    Book Rooms
+
+                </div>
+
+
+                <div className="bg-white p-5 rounded-xl shadow">
+
+                    Manage Bookings
+
+                </div>
+
+
+            </DashboardLayout >
+
         );
+
     }
 
-    const chartData =
-        stats.monthlyRevenue?.map(
-            (item) => ({
-                month: `Month ${item._id.month}`,
-                revenue: item.revenue,
-            })
-        ) || [];
+
+
+    if (!stats) {
+
+        return (
+
+            <DashboardLayout>
+
+                Loading...
+
+            </DashboardLayout>
+
+        );
+
+    }
+
 
 
     return (
+
         <DashboardLayout>
+
+
             <h1 className="text-3xl font-bold mb-6">
+
                 Analytics Dashboard
+
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div className="grid grid-cols-4 gap-6">
+
+
                 <StatCard
+
                     title="Users"
-                    value={stats.totalUsers}
+
+                    value={
+                        stats.totalUsers
+                    }
+
                 />
 
+
                 <StatCard
+
                     title="Hotels"
-                    value={stats.totalHotels}
+
+                    value={
+                        stats.totalHotels
+                    }
+
                 />
 
+
                 <StatCard
+
                     title="Bookings"
-                    value={stats.totalBookings}
+
+                    value={
+                        stats.totalBookings
+                    }
+
                 />
 
+
                 <StatCard
+
                     title="Revenue"
-                    value={`₹${stats.totalRevenue}`}
-                />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
-                <StatCard
-                    title="Users"
-                    value={stats.totalUsers}
+
+                    value={
+                        `₹${stats.totalRevenue}`
+                    }
+
                 />
 
-                <StatCard
-                    title="Hotels"
-                    value={stats.totalHotels}
-                />
 
-                <StatCard
-                    title="Bookings"
-                    value={stats.totalBookings}
-                />
-
-                <StatCard
-                    title="Revenue"
-                    value={`₹${stats.totalRevenue}`}
-                />
-
-                <StatCard
-                    title="Confirmed"
-                    value={stats.confirmedBookings}
-                />
-
-                <StatCard
-                    title="Cancelled"
-                    value={stats.cancelledBookings}
-                />
             </div>
 
-            <div className="mt-8">
-                <RevenueChart
-                    data={chartData}
-                />
-            </div>
+
+            <RevenueChart
+
+                data={
+                    stats.monthlyRevenue
+                }
+
+            />
+
+
         </DashboardLayout>
+
     );
+
 }

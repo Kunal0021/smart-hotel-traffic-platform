@@ -73,12 +73,10 @@ export default function Login() {
 
             console.log(
                 "LOGIN ERROR:",
-                error
+                error.response?.data ||
+                error.message
             );
 
-            alert(
-                "Login Failed"
-            );
         }
 
     };
